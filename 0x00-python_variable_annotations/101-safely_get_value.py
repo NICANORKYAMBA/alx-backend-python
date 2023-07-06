@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Defines a type-annotate a function."""
 from typing import TypeVar, Mapping, Any, Union
 
