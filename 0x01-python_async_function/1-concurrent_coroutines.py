@@ -6,10 +6,11 @@ Created on Mon July 10 14:30:00 2023
 @Author: Nicanor Kyamba
 """
 import asyncio
+from typing import List
 wait_random = __import__('0-basic_async_syntax').wait_random
 
 
-async def wait_n(n: int, max_delay: int) -> list:
+async def wait_n(n: int, max_delay: int) -> List[float]:
     """
     Wait n seconds and return the delay.
     """
