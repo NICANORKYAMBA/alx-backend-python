@@ -7,10 +7,10 @@ Created on Tue 11 11:00:00 2023
 """
 import random
 import asyncio
-from typing import AsyncGenerator
+from typing import Generator
 
 
-async def async_generator() -> AsyncGenerator[float, None]:
+async def async_generator() -> Generator[float, None, None]:
     """
     Async generator
     """
