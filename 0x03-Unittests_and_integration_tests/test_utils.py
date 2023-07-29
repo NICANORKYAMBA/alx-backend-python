@@ -97,8 +97,8 @@ class TestClass:
         Test property
         """
         return self.a_method()
-                
-                
+
+
 class TestMemoize(unittest.TestCase):
     """
     Test class for memoize method
