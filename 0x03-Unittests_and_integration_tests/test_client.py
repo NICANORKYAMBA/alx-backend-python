@@ -169,7 +169,9 @@ class TestGithubOrgClient(unittest.TestCase):
     },
 ])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
-
+    """
+    Test the GithubOrgClient class
+    """
     @classmethod
     def setUpClass(cls) -> None:
         route_payload = {
