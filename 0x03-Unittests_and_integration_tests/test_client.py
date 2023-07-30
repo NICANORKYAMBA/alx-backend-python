@@ -7,7 +7,7 @@ Created on Sun July  30 15:00:00 2023
 """
 import unittest
 from typing import Any, Dict
-from unittest.mock import patch, PropertyMock
+from unittest.mock import patch, PropertyMock, MagicMock
 from parameterized import parameterized
 from client import GithubOrgClient
 
@@ -70,3 +70,64 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(
                 result, "https://api.github.com/users/google/repos"
             )
+
+    @patch("client.get_json")
+    def test_public_repos(self, mock_get_json: MagicMock) -> None:
+        """
+        Test public repos using mock
+
+        Args:
+            mock_get_json (MagicMock): Mock object for get_json method
+        """
+        test_payload = {
+            'repos_url': "https://api.github.com/users/google/repos",
+            'repos': [
+                {
+                    "id": 1587145,
+                    "name": "search",
+                    "private": False,
+                    "owner": {
+                        "login": "google",
+                        "id": 1101001,
+                    },
+                    "fork": False,
+                    "url": "https://api.github.com/repos/google/search",
+                    "created_at": "2022-03-03T22:52:33Z",
+                    "updated_at": "2023-07-07T11:15:01Z",
+                    "has_issues": True,
+                    "forks": 90,
+                    "default_branch": "master",
+                },
+                {
+                    "id": 7787865,
+                    "name": "task_manager",
+                    "private": False,
+                    "owner": {
+                        "login": "google",
+                        "id": "123456789",
+                    },
+                    "fork": False,
+                    "url": "https://api.github.com/repos/google/task_manager",
+                    "created_at": "2022-03-03T22:52:33Z",
+                    "updated_at": "2023-07-07T11:15:01Z",
+                    "has_issues": True,
+                    "forks": 32,
+                    "default_branch": "master",
+                },
+            ]
+        }
+        mock_get_json.return_value = test_payload["repos"]
+        with patch(
+            "client.GithubOrgClient._public_repos_url",
+            new_callable=PropertyMock,
+        ) as mock_public_repos_url:
+            mock_public_repos_url.return_value = test_payload["repos_url"]
+            self.assertEqual(
+                GithubOrgClient("google").public_repos(),
+                [
+                    "search",
+                    "task_manager",
+                ],
+            )
+            mock_public_repos_url.assert_called_once()
+        mock_get_json.assert_called_once()
