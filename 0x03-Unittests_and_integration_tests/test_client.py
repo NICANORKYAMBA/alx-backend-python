@@ -185,24 +185,28 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.get_patcher = patch("requests.get", side_effect=get_payload)
         cls.get_patcher.start()
 
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.get_patcher.stop()
+
     def test_public_repos(self) -> None:
         """
         Test the public_repos method
         """
+        client = GithubOrgClient("google")
+        result = client.public_repos()
         self.assertEqual(
-            GithubOrgClient("google").public_repos(),
-            self.expected_repos,
+            result,
+            self.expected_repos
         )
 
     def test_public_repos_with_license(self) -> None:
         """
         Test the public_repos method with a license
         """
+        client = GithubOrgClient("google")
+        result = client.public_repos(license="apache-2.0")
         self.assertEqual(
-            GithubOrgClient("google").public_repos(license="apache-2.0"),
-            self.apache2_repos,
+            result,
+            self.apache2_repos
         )
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        cls.get_patcher.stop()
